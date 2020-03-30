@@ -1,0 +1,35 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+    <h1> Vragenoverzicht</h1>
+    {%  if perms.game.can_edit %}
+        <a href="{% url 'question_create' %}"> Voeg een nieuwe vraag toe</a><br><br>
+    {% endif %}
+    {% if question_list %}
+        <ul>
+            {% for question in question_list %}
+                {% if perms.game.can_edit %}
+                    <li>
+                        <em><a href="{{ question.get_absolute_url }}"><b>{{ question.nr }}:</b> {{ question.title }}</a> </em> &emsp; &emsp; {% if perms.game.can_view_answer %} <a href="{{ question.get_absolute_url }}/answer/">Antwoord</a>{% endif %}
+                    </li>
+                {% else %}
+                    {% if user.teamprofile.current_question  >  question.nr  %}
+                        <li>
+                            {% if perms.game.can_view_answer %}
+                                <b>{{ question.nr }}:</b> {{ question.title }} &emsp; &emsp;  <a href="{{ question.get_absolute_url }}/answer/">Antwoord</a>
+                            {% else %}
+                                <b>{{ question.nr }}:</b> {{ question.title }}
+                            {% endif %}
+                        </li>
+                    {% elif user.teamprofile.current_question  ==  question.nr %}
+                        <li>
+                            <em><a href="{{ question.get_absolute_url }}"><b>{{ question.nr }}:</b> {{ question.title }}</a> </em> &emsp; &emsp; {% if perms.game.can_view_answer %} <a href="{{ question.get_absolute_url }}/answer/">Antwoord</a>{% endif %}
+                        </li>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p> Er zijn momenteel geen vragen, voeg een nieuwe vraag toe</p>
+    {% endif %}
+{% endblock %}

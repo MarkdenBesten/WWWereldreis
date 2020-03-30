@@ -1,0 +1,36 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+    <title>{{ question.title }}</title>
+{% endblock %}
+
+{% block content %}
+
+    <h3>Vraag {{ question.nr }}</h3>
+    {% if perms.game.can_edit %}
+        <p><a href='{{ request.path }}/update/'>Wijzig vraag</a> Of <a href='{{ request.path }}/delete/'>Verwijder vraag</a> </p>
+    {% endif %}
+    <h1>{{ question.title }}</h1>
+    <p>{{ question.content }}</p>
+
+    {{ question.Alat|json_script:"Alat" }}
+    {{ question.Alon|json_script:"Alon" }}
+    {{ question.Blat|json_script:"Blat" }}
+    {{ question.Blon|json_script:"Blon" }}
+    {{ question.Clat|json_script:"Clat" }}
+    {{ question.Clon|json_script:"Clon" }}
+    {{ question.Dlat|json_script:"Dlat" }}
+    {{ question.Dlon|json_script:"Dlon" }}
+
+    <P><em>{{ question.explanation }}</em></P>
+
+    <div style="padding: 1rem"></div>
+
+    <div id="myMap" style="width: 60%; height: 50vh"></div>
+
+    <div style="padding-bottom: 5rem"></div>
+
+    {% load static %}
+    <script type="text/javascript" src="{% static 'scripts/map-view-correct-answer.js' %}"></script>
+    <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?key=AoHKnyjuOMY9kHy8tfvgdka9vQTddjLtVWwiEObTn_5M4QFokFXeKtiF3_6Mxbr0&callback=loadMapScenario' async defer></script>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base_generic.html' %}
+
+{% block title%}
+    <title>Tussenstand</title>
+{% endblock %}
+
+{% block content %}
+    <h1>Tussenstand</h1>
+    {% if teamprofile_list %}
+        <table>
+            <tr>
+                <td><b>Team</b></td>
+                <td><b>Punten</b></td>
+                <td><b>Jokers</b></td>
+                <td><b>Huidige vraag</b></td>
+
+            </tr>
+            {% for team in teamprofile_list %}
+                <tr>
+                    <td>{{ team.user }}</td>
+                    <td>{{ team.points }}</td>
+                    <td>{{ team.jokers }}</td>
+                    <td>{{ team.current_question }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>Er zijn momenteel geen teams.</p>
+    {% endif %}
+{% endblock %}

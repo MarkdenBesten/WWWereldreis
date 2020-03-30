@@ -1,0 +1,47 @@
+{% extends "base_generic.html" %}
+
+{% block title %}
+    <title>Reisgids</title>
+{% endblock %}
+
+{% block content %}
+    <h1>Reisgids</h1>
+    <p>op deze pagina vind je alle regels van het spel, en wat extra tips en tricks.</p>
+    <h2>Het spel</h2>
+    <p>Je gaat op het internet op zoek naar antwoorden op reisvragen. Als je een vraag correct beantwoord krijg je 1
+        punt. Als je het antwoord niet weet kun je een joker inzetten. Het team met de meeste punten wint!</p>
+    <h3>Vooraf</h3>
+    <p>Zorg dat je een goede internetverbinding hebt. Het hele spel draait namelijk op het internet.</p>
+    <p>Zorg ervoor dat je in contact bent met je team, bijvoorbeeld via Skype of discord.<br>
+        Elk team krijgt afzonderlijk zijn login informatie via whatsapp. Je hebt één account per team. Je kunt op meerdere computers tegelijk inloggen.
+        Je kunt inloggen in de linkerbovenhoek. Als je ingelogd bent zie je je gebruikersnaam in de linkerbovenhoek.</p>
+    <p>Om naar de vragen te gaan kun je onder het kopje <em>'spel'</em> het <a href="{% url 'questions' %}">vragenoverzicht</a> vinden.
+        Hiervoor dien je wel ingelogd te zijn. Ook kun je onder het knopje <em>'spel'</em> de <a href="{% url 'teams' %}">tussenstand</a> vinden.</p>
+    <h3>Tijdens het spel</h3>
+    <p>Om punten te verdienen, moet je vragen beantwoorden en zo over de wereld te reizen. Vragen kunnen gaan over
+        landen, culturen en plekken over heel de wereld en antwoorden zijn altijd locaties op de kaart. Je moet een
+        marker op de juiste plek op de kaart zetten. We beginnen met makkelijke vragen en geleidelijk zullen de vragen
+        steeds moeilijker worden.</p>
+    <p>Als je het antwoord niet (zeker) weet, kun je een joker gebruiken. De joker optie is pas beschikbaar 15 minuten
+        nadat je aan een vraag bent begonnen. Je zult dus eerst even je best moeten doen. Als je een joker gebruikt
+        krijg je geen punt voor die vraag.</p>
+    <p>Als je een vraag fout beantwoord, kun je het na 5 minuten opniew proberen.</p>
+    <p></p>
+    <h3>Einde van het spel</h3>
+    <p>Het spel stop om 23:00h. Het team met de meeste punten wint. In het geval van een gelijkspel, wint het team
+        dat de minste jokers in heeft gezet, Daarna gaat het om tijd.</p>
+
+    <h2>Tips en Trucs</h2>
+    <ul>
+        <li>
+            Goede communicatie is belangrijk. Overleg altijd met je team over het inleveren van een vraag of het gebruiken
+            van een joker.
+        </li>
+        <li>
+            Gebruik <a href="https://support.google.com/websearch/answer/2466433">operatoren in Google</a>,
+            <a href="https://www.google.com/advanced_search">Advanced search</a> en
+            <a href="https://images.google.com/">reverse image search</a>.
+        </li>
+    </ul>
+    <div style="margin-bottom: 5rem"></div>
+{% endblock %}
