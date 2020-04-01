@@ -11,6 +11,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from .models import Question, Answer, TeamProfile
 from .forms import AnswerForm
+from django.conf import settings
 
 
 # Create your views here.
@@ -42,6 +43,19 @@ class TeamListView(ListView):
 def get_answer(request, pk):
     question = get_object_or_404(Question, pk=pk)
     user = request.user
+
+    if settings.MIN_TIME > datetime.datetime.now().time():
+        context ={
+        'tijd': settings.MIN_TIME,
+        }
+        return render(request, 'game/too_early.html', context)
+
+    if settings.MAX_TIME < datetime.datetime.now().time():
+        context ={
+        'tijd': settings.MIN_TIME,
+        }
+        return render(request, 'game/too_late.html', context)
+
 
     # if this is a POST request we need to process the form data
     if request.method == 'POST':

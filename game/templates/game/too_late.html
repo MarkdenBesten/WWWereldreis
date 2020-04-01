@@ -1,0 +1,9 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+<h1>Het spel is afgelopen</h1>
+
+<p>De tijd is om het is {{ tijd }} geweest. Bekijk snel de <a href="{% url 'teams' %}">uitslag</a>. De winnaar komt eeuwige roem toe! </p>
+
+{% endblock %}

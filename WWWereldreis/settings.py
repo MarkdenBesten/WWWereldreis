@@ -126,3 +126,7 @@ STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL = '/'
 
 AUTH_USER_MODEL = 'users.User'
+
+import datetime
+MIN_TIME = datetime.time(hour=13, minute=5)
+MAX_TIME = datetime.time(hour=23)
