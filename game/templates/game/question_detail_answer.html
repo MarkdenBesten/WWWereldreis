@@ -8,7 +8,7 @@
 
     <h3>Vraag {{ question.nr }}</h3>
     {% if perms.game.can_edit %}
-        <p><a href='{{ request.path }}/update/'>Wijzig vraag</a> Of <a href='{{ request.path }}/delete/'>Verwijder vraag</a> </p>
+        <p><a href='{{ question.get_absolute_url }}/update/'>Wijzig vraag</a> Of <a href='{{ question.get_absolute_url }}/delete/'>Verwijder vraag</a> </p>
     {% endif %}
     <h1>{{ question.title }}</h1>
     <p>{{ question.content }}</p>

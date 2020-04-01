@@ -31,7 +31,9 @@ class Question(models.Model):
     class Meta:
         ordering = ['nr']
         permissions = (("can_edit", "Can create, edit or delete questions"),
-                       ("can_view_answer", "Can view all questiions and answers"))
+                       ("can_view_answer", "Can view all answers"),
+                       ("can_view_all_questions", "Can view all questions"),
+                       )
 
     # Methods
     @property

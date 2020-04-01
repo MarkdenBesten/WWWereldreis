@@ -13,8 +13,9 @@
     <h3>Vooraf</h3>
     <p>Zorg dat je een goede internetverbinding hebt. Het hele spel draait namelijk op het internet.</p>
     <p>Zorg ervoor dat je in contact bent met je team, bijvoorbeeld via Skype of discord.<br>
-        Elk team krijgt afzonderlijk zijn login informatie via whatsapp. Je hebt één account per team. Je kunt op meerdere computers tegelijk inloggen.
+        Elk team krijgt afzonderlijk zijn login informatie van de spelleider. Je hebt één account per team. Je kunt op meerdere computers tegelijk inloggen.
         Je kunt inloggen in de linkerbovenhoek. Als je ingelogd bent zie je je gebruikersnaam in de linkerbovenhoek.</p>
+    <p>Het spel begint om <b>{{ start }}</b></p>
     <p>Om naar de vragen te gaan kun je onder het kopje <em>'spel'</em> het <a href="{% url 'questions' %}">vragenoverzicht</a> vinden.
         Hiervoor dien je wel ingelogd te zijn. Ook kun je onder het knopje <em>'spel'</em> de <a href="{% url 'teams' %}">tussenstand</a> vinden.</p>
     <h3>Tijdens het spel</h3>
@@ -28,7 +29,7 @@
     <p>Als je een vraag fout beantwoord, kun je het na 5 minuten opniew proberen.</p>
     <p></p>
     <h3>Einde van het spel</h3>
-    <p>Het spel stop om 23:00h. Het team met de meeste punten wint. In het geval van een gelijkspel, wint het team
+    <p>Het spel stop om <b>{{ einde }}</b>. Het team met de meeste punten wint. In het geval van een gelijkspel, wint het team
         dat de minste jokers in heeft gezet, Daarna gaat het om tijd.</p>
 
     <h2>Tips en Trucs</h2>

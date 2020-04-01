@@ -8,7 +8,7 @@
     {% if question_list %}
         <ul>
             {% for question in question_list %}
-                {% if perms.game.can_edit %}
+                {% if perms.game.can_view_all_questions %}
                     <li>
                         <em><a href="{{ question.get_absolute_url }}"><b>{{ question.nr }}:</b> {{ question.title }}</a> </em> &emsp; &emsp; {% if perms.game.can_view_answer %} <a href="{{ question.get_absolute_url }}/answer/">Antwoord</a>{% endif %}
                     </li>

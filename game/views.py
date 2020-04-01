@@ -17,12 +17,20 @@ from django.conf import settings
 # Create your views here.
 def index(request):
     """View function for home page of site"""
-    return render(request, 'index.html')
+    context = {
+        'start': settings.MIN_TIME,
+        'einde': settings.MAX_TIME,
+    }
+    return render(request, 'index.html', context)
 
 
 def reisgids(request):
     """View function for 'reisgids'."""
-    return render(request, 'reisgids.html')
+    context = {
+        'start': settings.MIN_TIME,
+        'einde': settings.MAX_TIME,
+    }
+    return render(request, 'reisgids.html', context)
 
 
 def correctanswer(request):
