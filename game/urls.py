@@ -7,6 +7,7 @@ urlpatterns = [
     path('teams/', views.TeamListView.as_view(), name='teams'),
     path('questions/', views.QuestionsListView.as_view(), name='questions'),
     path('questions/correct/', views.correctanswer, name='correct_answer'),
+    path('questions/correct/', views.joker, name='joker'),
     path('questions/create/', views.QuestionCreate.as_view(), name='question_create'),
     path('questions/<uuid:pk>', views.get_answer, name='question-detail-view'),
     path('questions/<uuid:pk>/update/', views.QuestionUpdate.as_view(), name='question-update'),

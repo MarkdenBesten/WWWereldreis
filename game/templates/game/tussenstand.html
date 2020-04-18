@@ -1,0 +1,35 @@
+{% extends 'base_generic.html' %}
+
+{% block title%}
+    <title>Tussenstand</title>
+    <!--TODO Make tussenstand a result after game is finished -->
+{% endblock %}
+
+{% block content %}
+    <h1>Tussenstand</h1>
+    {% if teamprofile_list %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Team</th>
+                    <th scope="col">Punten</th>
+                    <th scope="col">Jokers</th>
+                    <th scope="col">Huidige vraag</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for team in teamprofile_list %}
+                <tr>
+                    <th scope="row">{{ team.user }}</th>
+                    <td>{{ team.points }}</td>
+                    <td>{{ team.jokers }}</td>
+                    <td>{{ team.current_question }}</td>
+                    <!-- TODO Make some constraint for completion final question -->
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Er zijn momenteel geen teams.</p>
+    {% endif %}
+{% endblock %}

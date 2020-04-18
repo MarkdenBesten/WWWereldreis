@@ -37,6 +37,10 @@ def correctanswer(request):
     """View function for correct answer."""
     return render(request, 'game/correct_answer.html')
 
+def joker(request):
+    """View function for correct answer."""
+    return render(request, 'game/joker.html')
+
 
 class QuestionsListView(LoginRequiredMixin, ListView):
     model = Question
@@ -45,6 +49,7 @@ class QuestionsListView(LoginRequiredMixin, ListView):
 class TeamListView(ListView):
     model = TeamProfile
     queryset = TeamProfile.objects.all().order_by('points', '-jokers')
+    template_name = 'game/tussenstand.html'
 
 
 @login_required()
@@ -97,7 +102,7 @@ def get_answer(request, pk):
                     team.jokers = team.jokers + 1
                     team.timeJoker = datetime.datetime.now() + datetime.timedelta(minutes=15)
                     team.save()
-                    return HttpResponseRedirect('/joker/')
+                    return HttpResponseRedirect('/game/joker/')
             else:
                 if team.timeWrong.time() > (datetime.datetime.now() - datetime.timedelta(hours=2)).time():
                     # Mag nog niet inleveren want fout-tijd is nog niet om
@@ -107,7 +112,7 @@ def get_answer(request, pk):
                         'question': question,
                         'gebruiker': user,
                         'error': "Je moet 5 minuten nadat je een fout antwoord hebt gegeven, wacht tot na: ",
-                        'tijd': (team.timeWrong + datetime.timedelta(hours=2)).time()
+                        'tijd': ( team.timeWrong + datetime.timedelta(hours=2) ).time(),
                     }
                     return render(request, 'question_ask.html', context)
                 else:
@@ -133,22 +138,21 @@ def get_answer(request, pk):
                         )
                         return poly
 
-                    if pointarea() > question.area + 0.00001:
+                    if pointarea() > question.area + 0.000001:
                         # answer is wrong
                         # area cannot be smaller
                         answer.result = 'f'
                         answer.save()
-                        team.timeWrong = datetime.datetime.now() + datetime.timedelta(minutes=5)
+                        team.timeWrong = datetime.datetime.now() + datetime.timedelta(minutes=0) #TODO change wrongdelta back to 5 min
                         team.save()
 
                         context = {
-                            'form': AnswerForm(),
                             'question': question,
                             'gebruiker': user,
-                            'error': "Helaas! dat antwoord is fout. Probeer het opniew na  ",
                             'tijd': (team.timeWrong).time()
                         }
-                        return render(request, 'question_ask.html', context)
+                        return render(request, 'game/wrong_answer.html', context)
+
                     elif pointarea() < question.area - 0.0001:
                         return HttpResponseRedirect('/rare-area-error/')
                     else:
@@ -165,11 +169,13 @@ def get_answer(request, pk):
     # if a GET (or any other method) we'll create a blank form
     else:
         form = AnswerForm()
+        num_questions = Question.objects.count()
 
         context = {
             'form': form,
             'question': question,
-            'gebruiker': user
+            'gebruiker': user,
+            'num_questions': num_questions,
         }
 
         return render(request, 'question_ask.html', context)

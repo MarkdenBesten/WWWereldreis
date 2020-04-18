@@ -1,0 +1,11 @@
+{% extends 'base_generic.html' %}
+
+{% block title%}
+    <title>Fout</title>
+{% endblock %}
+
+{% block content %}
+<h1>Helaas</h1>
+    <p>Het opgegeven antwoord is fout. Probeer het na {{ tijd }} opnieuw.</p>
+    <p>Keer terug naar de <a href="{{ question.get_absolute_url }}">vraag</a> </p>
+{% endblock %}

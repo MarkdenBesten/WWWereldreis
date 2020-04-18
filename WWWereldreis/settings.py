@@ -128,5 +128,5 @@ LOGIN_REDIRECT_URL = '/'
 AUTH_USER_MODEL = 'users.User'
 
 import datetime
-MIN_TIME = datetime.time(hour=13, minute=5)
-MAX_TIME = datetime.time(hour=23)
+MIN_TIME = datetime.time(hour=00, minute=00)
+MAX_TIME = datetime.time(hour=23, minute=59)

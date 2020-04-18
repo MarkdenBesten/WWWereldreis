@@ -3,11 +3,14 @@ from datetime import datetime, timedelta
 
 from django.db import models
 from django.urls import reverse
+# from picklefield.fields import PickledObjectField
 
 from users.models import User
 
 
 # Create your models here.
+# TODO add game model
+# TODO add track model
 class Question(models.Model):
 
     # Fields
@@ -18,6 +21,7 @@ class Question(models.Model):
     explanation = models.TextField(blank=True, null=True)
 
     # declare the location parameters
+    # TODO Change location input to string using PickledObjectField()
     Alat = models.FloatField()
     Alon = models.FloatField()
     Blat = models.FloatField()

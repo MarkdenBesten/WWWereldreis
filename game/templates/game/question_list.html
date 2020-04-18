@@ -1,34 +1,43 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-    <h1> Vragenoverzicht</h1>
+    <h1 xmlns="http://www.w3.org/1999/html"> Vragenoverzicht</h1>
     {%  if perms.game.can_edit %}
         <a href="{% url 'question_create' %}"> Voeg een nieuwe vraag toe</a><br><br>
     {% endif %}
     {% if question_list %}
-        <ul>
+        <table class="table">
             {% for question in question_list %}
                 {% if perms.game.can_view_all_questions %}
-                    <li>
-                        <em><a href="{{ question.get_absolute_url }}"><b>{{ question.nr }}:</b> {{ question.title }}</a> </em> &emsp; &emsp; {% if perms.game.can_view_answer %} <a href="{{ question.get_absolute_url }}/answer/">Antwoord</a>{% endif %}
-                    </li>
-                {% else %}
-                    {% if user.teamprofile.current_question  >  question.nr  %}
-                        <li>
+                    <tbody>
+                        <tr>
+                            <td><a href="{{ question.get_absolute_url }}"><b>{{ question.nr }}</b>: {{ question.title }}</a></td>
                             {% if perms.game.can_view_answer %}
-                                <b>{{ question.nr }}:</b> {{ question.title }} &emsp; &emsp;  <a href="{{ question.get_absolute_url }}/answer/">Antwoord</a>
-                            {% else %}
-                                <b>{{ question.nr }}:</b> {{ question.title }}
+                                <a href="{{ question.get_absolute_url }}/answer/">Antwoord</a>
                             {% endif %}
-                        </li>
-                    {% elif user.teamprofile.current_question  ==  question.nr %}
-                        <li>
-                            <em><a href="{{ question.get_absolute_url }}"><b>{{ question.nr }}:</b> {{ question.title }}</a> </em> &emsp; &emsp; {% if perms.game.can_view_answer %} <a href="{{ question.get_absolute_url }}/answer/">Antwoord</a>{% endif %}
-                        </li>
+                        </tr>
+                    </tbody>
+                {% else %}
+                    {% if user.teamprofile.current_question  ==  question.nr   %}
+                        <tr>
+                            <td><a href="{{ question.get_absolute_url }}">{{ question.title }}</a></td>
+                            {% if perms.game.can_view_answer %}
+                                <td><a href="{{ question.get_absolute_url }}/answer/">Antwoord</a></td>
+                            {% endif %}
+                        </tr>
+
+                    {% elif user.teamprofile.current_question  >  question.nr %}
+                        <!-- Delete these comments to display all finished questions
+                        <tr>
+                            <td>{{ question.title }}</td>
+                            {% if perms.game.can_view_answer %}
+                                <td><a href="{{ question.get_absolute_url }}/answer/">Antwoord</a></td>
+                            {% endif %}
+                        </tr> -->
                     {% endif %}
                 {% endif %}
             {% endfor %}
-        </ul>
+        </table>
     {% else %}
         <p> Er zijn momenteel geen vragen, voeg een nieuwe vraag toe</p>
     {% endif %}

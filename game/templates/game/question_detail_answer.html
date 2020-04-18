@@ -11,8 +11,27 @@
         <p><a href='{{ question.get_absolute_url }}/update/'>Wijzig vraag</a> Of <a href='{{ question.get_absolute_url }}/delete/'>Verwijder vraag</a> </p>
     {% endif %}
     <h1>{{ question.title }}</h1>
+    {% if question.nr == 1 %}
+        <p>Dit is een instapvraag om te oefenen met de Spelwebsite. De vraag werkt hetzelfde als andere reisvragen:</p>
+        <ul>
+            <li>Bij een goed antwoord krijg je een punt.</li>
+            <li>Bij een fout antwoord moet je 5 minuten wachten tot je het opnieuw mag proberen.</li>
+            <li>Als je er niet uit komt mag je een joker gebruiken om naar de volgende vraag te gaan. Je krijgt dan geen punt voor de vraag</li>
+            <li>Je kunt niet terugkeren naar een vorige vraag als je een joker hebt ingezet</li>
+        </ul>
+    {% elif question.nr == 2 %}
+        <p>De vragen beginnen makkelijk en zullen steeds moeilijker worden.</p>
+        <ul>
+            <li>De Joker wordt pas beschikbaar 15 minuten na het beantwoorden van de vorige vraag.</li>
+            <li>Als je 5 minuten moet wachten omdat je een fout antwoord hebt gegeven kun je wél een joker inzetten</li>
+            <li>Omdat Google Maps niet gratis is wordt Bing Maps gebruikt. Deze komen soms niet helemaal overeen.</li>
+            <li>Er zijn in totaal {{ num_questions }} vragen, dit is vraag {{ question.nr }}.</li>
+        </ul>
+    {% elif question.nr == num_quesstions %}
+        <p>Dit is de laatste vraag </p>
+    {% endif %}
     <p>{{ question.content }}</p>
-
+    <!-- TODO add option to see answered location(s)
     {{ question.Alat|json_script:"Alat" }}
     {{ question.Alon|json_script:"Alon" }}
     {{ question.Blat|json_script:"Blat" }}

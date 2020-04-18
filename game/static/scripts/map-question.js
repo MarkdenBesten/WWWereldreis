@@ -16,16 +16,26 @@ function loadMapScenario() {
 
     document.getElementById('give-answer').onclick = function () { giveAnswer() };
     function giveAnswer() {
-        document.getElementById('id_latitude').value = pin.getLocation().latitude;
-        document.getElementById('id_longitude').value = pin.getLocation().longitude;
-        document.getElementById('id_Joker').value = 'Nee';
-        document.getElementById('formulier').submit()
-
+        function submitForm(){
+            return confirm('Weet je zeker dat je dit antwoord wil inleveren?');
+        }
+        if( submitForm() ) {
+            document.getElementById('id_latitude').value = pin.getLocation().latitude;
+            document.getElementById('id_longitude').value = pin.getLocation().longitude;
+            document.getElementById('id_Joker').value = 'Nee';
+            document.getElementById('formulier').submit();
+        }
     }
 
     document.getElementById('use-joker').onclick = function () { useJoker() };
     function useJoker() {
-        document.getElementById('id_Joker').value = 'Joker';
-        document.getElementById('formulier').submit()
+        function submitForm(){
+            return confirm('Weet je zeker dat je een joker wil inzetten?');
+        }
+
+        if( submitForm() ) {
+            document.getElementById('id_Joker').value = 'Joker';
+            document.getElementById('formulier').submit()
+        }
     }
 }

@@ -13,7 +13,7 @@ function loadMapScenario() {
 
     map.setView({
         center: new Microsoft.Maps.Location(Alat - (Alat - Clat)/2, Alon - (Alon - Blon)/2),
-        zoom: 12
+        zoom: 12 //TODO find some way to zoom automatically
     });
 
 
