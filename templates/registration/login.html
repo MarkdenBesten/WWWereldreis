@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-<div id="login">
+<div id="login" class="text-center">
     {% if user.is_authenticated %}
         <p class="err-login">Je bent al ingelogd, <em> pannenkoek!</em> <br>Keer terug naar de <a href="{% url 'index' %}">startpagina</a>, of <a href="{% url 'logout' %}">log uit</a>.</p>
     {% else%}
@@ -28,18 +28,10 @@
 
         <form class="form-signin" method="post" action="{% url 'login' %}">
             {% csrf_token %}
-            <h1 class="h3 mb font-weight-normal">Vul uw gegevens in</h1>
-            <table>
-                <tr>
-                    <td>{{ form.username.label_tag }}</td>
-                    <td>{{ form.username }}</td>
-                </tr>
-                <tr>
-                    <td class=>{{ form.password.label_tag }}</td>
-                    <td class=>{{ form.password }}</td>
-                </tr>
-            </table>
-            <input type="submit" value="login" />
+            <h1 class="h3 mb-3 font-weight-normal">Vul uw gegevens in</h1>
+            {{ form.username }}
+            {{ form.password }}
+            <input class="btn btn-lg btn-primary btn-block" type="submit" value="login" />
             <input type="hidden" name="next" value="{{ next }}" />
         </form>
     {% endif %}
