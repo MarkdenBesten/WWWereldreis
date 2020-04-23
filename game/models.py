@@ -1,5 +1,5 @@
 import uuid  # Required for unique ID
-from datetime import datetime, timedelta
+import datetime
 
 from django.db import models
 from django.urls import reverse
@@ -19,6 +19,7 @@ class Question(models.Model):
     title = models.CharField(max_length=300)
     content = models.TextField()
     explanation = models.TextField(blank=True, null=True)
+    fileUrl = models.CharField(max_length=100, null=True, blank=True, default=None)
 
     # declare the location parameters
     # TODO Change location input to string using PickledObjectField()
@@ -34,9 +35,9 @@ class Question(models.Model):
     # Metadata
     class Meta:
         ordering = ['nr']
-        permissions = (("can_edit", "Can create, edit or delete questions"),
-                       ("can_view_answer", "Can view all answers"),
-                       ("can_view_all_questions", "Can view all questions"),
+        permissions = (("can_edit", "Kan vragen toevoegen, verwijderen en wijzigen."),
+                       ("can_view_answer", "Mag alle vragen zien"),
+                       ("can_view_all_questions", "Mag alle antwoorden zien"),
                        )
 
     # Methods
@@ -56,7 +57,7 @@ class Question(models.Model):
         return str(self.nr) + ': ' + self.title
 
     def get_absolute_url(self):
-        return reverse('question-detail-view', args=[str(self.id)])
+        return reverse('question-page', args=[str(self.id)])
 
 
 class TeamProfile(models.Model):
@@ -64,10 +65,15 @@ class TeamProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     points = models.IntegerField(default=0)
     jokers = models.IntegerField(default=0)
-    timeWrong = models.DateTimeField(default=datetime.now())
-    timeJoker = models.DateTimeField(default=(datetime.now() + timedelta(minutes=15)))
+    timeLastCorrect = models.TimeField(default=datetime.time(hour=12, minute=00))
+    timeWrong = models.DateTimeField(default=datetime.time(hour=12, minute=00))
+    timeJoker = models.DateTimeField(default=(datetime.time(hour=12, minute=00)))
 
     # Metadata
+    class Meta:
+        permissions = (
+            ('can view all given answers', 'Mag alle gegeven antwoorden van alle teams zien'),
+        )  # TODO Zorg ervoor dat gegeven antwoorden zichtbaar worden.
 
     # Methods
     @property

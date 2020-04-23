@@ -1,35 +1,47 @@
 {% extends 'base_generic.html' %}
 
 {% block title%}
-    <title>Tussenstand</title>
-    <!--TODO Make tussenstand a result after game is finished -->
+    <title>{{ title }}</title>
 {% endblock %}
 
 {% block content %}
-    <h1>Tussenstand</h1>
+
+    <h1 style="margin-bottom: 16px">{{ title }}</h1>
     {% if teamprofile_list %}
-        <table class="table">
-            <thead>
+        <table class="table table-hover">
+            <thead class="bg-primary thead-dark">
                 <tr>
                     <th scope="col">Team</th>
                     <th scope="col">Punten</th>
                     <th scope="col">Jokers</th>
                     <th scope="col">Huidige vraag</th>
+                    <th scope="col">Tijd</th>
                 </tr>
             </thead>
             <tbody>
             {% for team in teamprofile_list %}
-                <tr>
-                    <th scope="row">{{ team.user }}</th>
-                    <td>{{ team.points }}</td>
-                    <td>{{ team.jokers }}</td>
-                    <td>{{ team.current_question }}</td>
-                    <!-- TODO Make some constraint for completion final question -->
-                </tr>
+                {% if num_questions < team.current_question %}
+                    <tr class="table-success">
+                {% else %}
+                    <tr>
+                {% endif %}
+                        <th>{{ team.user }}</th>
+                        <td>{{ team.points }}</td>
+                        <td>{{ team.jokers }}</td>
+
+                        {% if num_questions < team.current_question %}
+                            <td><em>Klaar!</em></td>
+                        {% else %}
+                            <td>{{ team.current_question }}</td>
+                        {% endif %}
+
+                        <td>{{ team.timeLastCorrect }}</td>
+                    </tr>
+
             {% endfor %}
             </tbody>
         </table>
     {% else %}
-        <p>Er zijn momenteel geen teams.</p>
+        <p>Er zijn momenteel geen deelnemende teams.</p>
     {% endif %}
 {% endblock %}
