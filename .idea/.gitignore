@@ -1,2 +1,8 @@
 # Default ignored files
 /workspace.xml
+
+# Text backup files
+*.bak
+
+# Database
+*.sqlite3
