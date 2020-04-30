@@ -35,9 +35,9 @@
         <p><a href="URL-image{{ question.fileUrl }}">URL-image{{ question.fileUrl }}</a> </p>
     {% endif %}
 
-    <p>{{ team.answer }}</p>
+    <p><em>{{ question.explanation }}</em></p>
 
-    <!-- TODO add option to see answered location(s) -->
+    <!-- interactive stuff -->
     {{ question.Alat|json_script:"Alat" }}
     {{ question.Alon|json_script:"Alon" }}
     {{ question.Blat|json_script:"Blat" }}
@@ -46,9 +46,7 @@
     {{ question.Clon|json_script:"Clon" }}
     {{ question.Dlat|json_script:"Dlat" }}
     {{ question.Dlon|json_script:"Dlon" }}
-
-
-    <p><em>{{ question.explanation }}</em></p>
+    {{ answers|json_script:"answers"}}
 
     <div align="center">
         <button id="show-answers" type="button" class="btn btn-primary btn-block">Laat mijn antwoorden zien</button>
@@ -61,6 +59,6 @@
     <div style="padding-bottom: 5rem"></div>
 
     {% load static %}
-    <script type="text/javascript" src="{% static 'scripts/map-view-correct-answer.js' %}"></script>
+    <script type="text/javascript" src="{% static 'scripts/map-answer-page.js' %}"></script>
     <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?key=AoHKnyjuOMY9kHy8tfvgdka9vQTddjLtVWwiEObTn_5M4QFokFXeKtiF3_6Mxbr0&callback=loadMapScenario' async defer></script>
 {% endblock %}

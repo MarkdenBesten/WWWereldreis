@@ -7,6 +7,17 @@
 {% block content %}
 
     <h1 style="margin-bottom: 16px">{{ title }}</h1>
+    {% if title == 'Uitslag' %}
+        <p>
+            <em>
+                Lieve deelnemer. Het is een gekke tijd, echt een gekke tijd hè? Daarom is er, juist nu, op dit gekke
+                moment, behoefte aan samen, samen verbroederen, en samen puzzelen. Wij zijn er voor elkaar. Ook nu. Juist
+                nu. Juist... Ook... Nu. We doen dat samen door lekker onszelf te blijven. Samen. Niet alleen. Bedankt, namens
+                iedereen, voor het deelnemen aan dit spel. Juist in deze tijden. Ieder thuis, maar toch, met elkaar, en voor elkaar. Puzzel en raad ook de
+                volgende keer weer mee. Samen. Juist nu, of dan dus. Ook dan. Juist dan. Had ik al gezegd dat we het samen moeten doen?
+            </em>
+        </p>
+    {% endif %}
     {% if teamprofile_list %}
         <table class="table table-hover">
             <thead class="bg-primary thead-dark">
@@ -20,8 +31,8 @@
             </thead>
             <tbody>
             {% for team in teamprofile_list %}
-                {% if num_questions < team.current_question %}
-                    <tr class="table-success">
+                {% if team == user.teamprofile %}
+                    <tr class="table-info">
                 {% else %}
                     <tr>
                 {% endif %}
@@ -30,7 +41,7 @@
                         <td>{{ team.jokers }}</td>
 
                         {% if num_questions < team.current_question %}
-                            <td><em>Klaar!</em></td>
+                            <td class="bg-success"><em>Klaar!</em></td>
                         {% else %}
                             <td>{{ team.current_question }}</td>
                         {% endif %}

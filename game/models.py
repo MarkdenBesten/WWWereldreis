@@ -65,9 +65,9 @@ class TeamProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     points = models.IntegerField(default=0)
     jokers = models.IntegerField(default=0)
-    timeLastCorrect = models.TimeField(default=datetime.time(hour=12, minute=00))
-    timeWrong = models.DateTimeField(default=datetime.time(hour=12, minute=00))
-    timeJoker = models.DateTimeField(default=(datetime.time(hour=12, minute=00)))
+    timeLastCorrect = models.DateTimeField(default=None, null=True, blank=True)
+    timeWrong = models.DateTimeField(default=datetime.datetime.now())
+    timeJoker = models.DateTimeField(default=(datetime.datetime.now()))
 
     # Metadata
     class Meta:

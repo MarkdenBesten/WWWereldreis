@@ -1,16 +1,21 @@
 import datetime
 
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from .models import Question, Answer, TeamProfile
 from .forms import AnswerForm
 from django.conf import settings
+
+wrongDelta = datetime.timedelta(hours=0, minutes=5)
+jokerDelta = datetime.timedelta(hours=0, minutes=15)
+tzDelta = datetime.timedelta(hours=2)
 
 
 # Create your views here.
@@ -53,6 +58,7 @@ class TeamListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['user'] = self.request.user
         context['num_questions'] = Question.objects.count()
         if settings.MAX_TIME > datetime.datetime.now().time():
             # spel is afgelopen
@@ -95,7 +101,7 @@ def question_page(request, pk):
             if team.current_question != question.nr:
                 return HttpResponseRedirect('/game/questions/')
             if form.cleaned_data['Joker'] == 'Joker':
-                if team.timeJoker.time() > (datetime.datetime.now() - datetime.timedelta(hours=2)).time():
+                if team.timeJoker > timezone.now():
                     # mag nog niet inleveren want jokertijd is nog niet om
 
                     context = {
@@ -103,7 +109,7 @@ def question_page(request, pk):
                         'gebruiker': user,
                         'question': question,
                         'error': "Je moet 15 minuten wachten voordat je een joker kunt gebruiken, dit kan pas na: ",
-                        'tijd': (team.timeJoker + datetime.timedelta(hours=2)).time()
+                        'tijd': (team.timeJoker + tzDelta).time()
                     }
                     return render(request, 'question_ask.html', context)
                 else:
@@ -111,11 +117,11 @@ def question_page(request, pk):
                     answer.result = 'j'
                     answer.save()
                     team.jokers = team.jokers + 1
-                    team.timeJoker = datetime.datetime.now() + datetime.timedelta(minutes=15)
+                    team.timeJoker = datetime.datetime.now() + jokerDelta
                     team.save()
                     return HttpResponseRedirect('/game/questions/joker/')
             else:
-                if team.timeWrong.time() > (datetime.datetime.now() - datetime.timedelta(hours=2)).time():
+                if team.timeWrong > timezone.now():
                     # Mag nog niet inleveren want fout-tijd is nog niet om
 
                     context = {
@@ -123,7 +129,7 @@ def question_page(request, pk):
                         'question': question,
                         'gebruiker': user,
                         'error': "Je moet 5 minuten nadat je een fout antwoord hebt gegeven, wacht tot na: ",
-                        'tijd': (team.timeWrong + datetime.timedelta(hours=2)).time(),
+                        'tijd': (team.timeWrong.time()),
                     }
                     return render(request, 'question_ask.html', context)
                 else:
@@ -160,14 +166,13 @@ def question_page(request, pk):
                         # area cannot be smaller
                         answer.result = 'f'
                         answer.save()
-                        team.timeWrong = datetime.datetime.now() + datetime.timedelta(minutes=5)
-                        # TODO change wrongdelta back to 5 min
+                        team.timeWrong = timezone.now() + wrongDelta
                         team.save()
 
                         context = {
                             'question': question,
                             'gebruiker': user,
-                            'tijd': team.timeWrong.time()
+                            'tijd': (team.timeWrong + tzDelta).time()
                         }
                         return render(request, 'game/wrong_answer.html', context)
 
@@ -175,12 +180,12 @@ def question_page(request, pk):
                         # Dit hoort niet te kunnen
                         return HttpResponseRedirect('/rare-area-error/')
                     else:
-                        # answer is right
+                        # answer is correct
                         answer.result = 'g'
                         answer.save()
                         team.points = team.points + 1
-                        team.timeJoker = datetime.datetime.now() + datetime.timedelta(minutes=15)
-                        team.timeLastCorrect = datetime.datetime.now()
+                        team.timeJoker = timezone.now() + jokerDelta
+                        team.timeLastCorrect = timezone.now()
                         team.save()
                         return HttpResponseRedirect('/game/questions/correct')
         else:
@@ -201,15 +206,26 @@ def question_page(request, pk):
         return render(request, 'question_ask.html', context)
 
 
-class AnswerView(PermissionRequiredMixin, DetailView):
-    permission_required = 'game.can_view_answer'
-    model = Question
-    template_name = 'game/question_detail_answer.html'
+@permission_required('game.can_view_answer')
+def answer_page(request, pk):
+    question = get_object_or_404(Question, pk=pk)
+    user = request.user
+    team = user.teamprofile
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['team'] = self.request.user.teamprofile
-        return context
+    answers = Answer.objects.filter(question=question, team=team).exclude(result='j')
+    list_of_answers = []
+    for answer in answers:
+        time = str(answer.time.time())[0:5]
+        answer_list = [time, answer.latitude, answer.longitude]
+        list_of_answers.append(answer_list)
+
+    num_questions = Question.objects.count()
+    context = {
+        'question': question,
+        'answers': list_of_answers,
+        'num_questions': num_questions,
+    }
+    return render(request, 'game/answer_page.html', context)
 
 
 class QuestionCreate(PermissionRequiredMixin, CreateView):

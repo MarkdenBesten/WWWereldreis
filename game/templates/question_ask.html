@@ -28,7 +28,8 @@
         {% endif %}
         <p>{{ question.content }}</p>
         {% if question.fileUrl %}
-            <p><a href="URL-image{{ question.fileUrl }}">URL-image{{ question.fileUrl }}</a> </p>
+            {% load static %}
+            <p><a href="{% static 'gamedata'%}/{{ question.fileUrl }}">{{ question.fileUrl }}</a> </p>
         {% endif %}
         <p style="color: red">{{ error }} {{ tijd }}</p>
 
