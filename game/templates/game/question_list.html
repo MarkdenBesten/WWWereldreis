@@ -3,7 +3,7 @@
 {% block content %}
     <h1 xmlns="http://www.w3.org/1999/html"> Vragenoverzicht</h1>
     {%  if perms.game.can_edit %}
-        <a href="{% url 'question_create' %}"> Voeg een nieuwe vraag toe</a><br><br>
+        <a href="{% url 'question-create' %}"> Voeg een nieuwe vraag toe</a><br><br>
     {% endif %}
     {% if question_list %}
         <table class="table">
@@ -13,7 +13,7 @@
                         <tr>
                             <td><a href="{{ question.get_absolute_url }}"><b>{{ question.nr }}</b>: {{ question.title }}</a></td>
                             {% if perms.game.can_view_answer %}
-                                <a href="{{ question.get_absolute_url }}/answer/">Antwoord</a>
+                                <td><a href="{{ question.get_absolute_url }}/answer/">Antwoord</a></td>
                             {% endif %}
                         </tr>
                     </tbody>

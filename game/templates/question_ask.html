@@ -4,7 +4,7 @@
     {% if gebruiker.teamprofile.current_question != question.nr%}
         <h1>Deze vraag heb je al beantwoord!</h1>
         <p>Je bent bij vraag {{ gebruiker.teamprofile.current_question }}, dit is vraag {{ question.nr }}</p>
-        <a href="{% url 'questions' %}">klik hier om terug te keren naar het vragenoverzicht</a>
+        <a href="{% url 'question-list' %}">klik hier om terug te keren naar het vragenoverzicht</a>
 
 
     {% else %}
@@ -27,7 +27,10 @@
             </ul>
         {% endif %}
         <p>{{ question.content }}</p>
-        <!-- TODO Find a way to implement simple html in question.content -->
+        {% if question.fileUrl %}
+            {% load static %}
+            <p><a href="{% static 'gamedata'%}/{{ question.fileUrl }}">{{ question.fileUrl }}</a> </p>
+        {% endif %}
         <p style="color: red">{{ error }} {{ tijd }}</p>
 
         <form action="" method="post" id="formulier" hidden>
@@ -38,13 +41,20 @@
             <input type="submit" value="Submit">
         </form>
 
-        <button id="use-joker">Zet joker in</button>
-        <button id="give-answer">Geef huidige locatie als Antwoord</button>
-        <button id="place-here" >Plaats pin in het midden</button>
-        <div></div>
-        <div style="height: 1vh"></div>
-        <div id="myMap" style="height: 70vh; width: 60vw"></div>
+        <div class="row" style="margin-bottom: 16px">
+            <div class="col-md-4">
+                <button id="use-joker" type="button" class="btn btn-outline-danger btn-block">Gebruik Joker</button>
+            </div>
+            <div class="col-md-4">
+                <button id="place-here" type="button" class="btn btn-outline-info btn-block">Plaats Marker in het midden</button>
+            </div>
+            <div class="col-md-4">
+                <button id="give-answer" type="button" class="btn btn-outline-primary btn-block">Geef  locatie als Antwoord</button>
+            </div>
+        </div>
+        <div id="myMap" style="height: 70vh; width: 100%"></div>
         <div style="padding-bottom: 2rem"></div>
+
         {% load static %}
         <script type="text/javascript" src="{% static 'scripts/map-question.js' %}"></script>
         <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?key=AoHKnyjuOMY9kHy8tfvgdka9vQTddjLtVWwiEObTn_5M4QFokFXeKtiF3_6Mxbr0&callback=loadMapScenario' async defer></script>

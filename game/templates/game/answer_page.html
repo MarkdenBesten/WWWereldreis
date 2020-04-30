@@ -31,7 +31,14 @@
         <p>Dit is de laatste vraag </p>
     {% endif %}
     <p>{{ question.content }}</p>
-    <!-- TODO add option to see answered location(s)
+    {% if question.fileUrl %}
+            {% load static %}
+            <p><a href="{% static 'gamedata'%}/{{ question.fileUrl }}">{{ question.fileUrl }}</a> </p>
+        {% endif %}
+
+    <p><em>{{ question.explanation }}</em></p>
+
+    <!-- interactive stuff -->
     {{ question.Alat|json_script:"Alat" }}
     {{ question.Alon|json_script:"Alon" }}
     {{ question.Blat|json_script:"Blat" }}
@@ -40,16 +47,19 @@
     {{ question.Clon|json_script:"Clon" }}
     {{ question.Dlat|json_script:"Dlat" }}
     {{ question.Dlon|json_script:"Dlon" }}
+    {{ answers|json_script:"answers"}}
 
-    <P><em>{{ question.explanation }}</em></P>
+    <div align="center">
+        <button id="show-answers" type="button" class="btn btn-primary btn-block">Laat mijn antwoorden zien</button>
+    </div>
 
     <div style="padding: 1rem"></div>
 
-    <div id="myMap" style="width: 60%; height: 50vh"></div>
+    <div id="myMap" style="width: 100%; height: 70vh"></div>
 
     <div style="padding-bottom: 5rem"></div>
 
     {% load static %}
-    <script type="text/javascript" src="{% static 'scripts/map-view-correct-answer.js' %}"></script>
+    <script type="text/javascript" src="{% static 'scripts/map-answer-page.js' %}"></script>
     <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?key=AoHKnyjuOMY9kHy8tfvgdka9vQTddjLtVWwiEObTn_5M4QFokFXeKtiF3_6Mxbr0&callback=loadMapScenario' async defer></script>
 {% endblock %}

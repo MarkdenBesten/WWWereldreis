@@ -1,35 +1,58 @@
 {% extends 'base_generic.html' %}
 
 {% block title%}
-    <title>Tussenstand</title>
-    <!--TODO Make tussenstand a result after game is finished -->
+    <title>{{ title }}</title>
 {% endblock %}
 
 {% block content %}
-    <h1>Tussenstand</h1>
+
+    <h1 style="margin-bottom: 16px">{{ title }}</h1>
+    {% if title == 'Uitslag' %}
+        <p>
+            <em>
+                Lieve deelnemer. Het is een gekke tijd, echt een gekke tijd hè? Daarom is er, juist nu, op dit gekke
+                moment, behoefte aan samen, samen verbroederen, en samen puzzelen. Wij zijn er voor elkaar. Ook nu. Juist
+                nu. Juist... Ook... Nu. We doen dat samen door lekker onszelf te blijven. Samen. Niet alleen. Bedankt, namens
+                iedereen, voor het deelnemen aan dit spel. Juist in deze tijden. Ieder thuis, maar toch, met elkaar, en voor elkaar. Puzzel en raad ook de
+                volgende keer weer mee. Samen. Juist nu, of dan dus. Ook dan. Juist dan. Had ik al gezegd dat we het samen moeten doen?
+            </em>
+        </p>
+    {% endif %}
     {% if teamprofile_list %}
-        <table class="table">
-            <thead>
+        <table class="table table-hover">
+            <thead class="bg-primary thead-dark">
                 <tr>
                     <th scope="col">Team</th>
                     <th scope="col">Punten</th>
                     <th scope="col">Jokers</th>
                     <th scope="col">Huidige vraag</th>
+                    <th scope="col">Tijd</th>
                 </tr>
             </thead>
             <tbody>
             {% for team in teamprofile_list %}
-                <tr>
-                    <th scope="row">{{ team.user }}</th>
-                    <td>{{ team.points }}</td>
-                    <td>{{ team.jokers }}</td>
-                    <td>{{ team.current_question }}</td>
-                    <!-- TODO Make some constraint for completion final question -->
-                </tr>
+                {% if team == user.teamprofile %}
+                    <tr class="table-info">
+                {% else %}
+                    <tr>
+                {% endif %}
+                        <th>{{ team.user }}</th>
+                        <td>{{ team.points }}</td>
+                        <td>{{ team.jokers }}</td>
+
+                        {% if num_questions < team.current_question %}
+                            <td class="bg-success"><em>Klaar!</em></td>
+                        {% else %}
+                            <td>{{ team.current_question }}</td>
+                        {% endif %}
+
+                        <td>{{ team.timeLastCorrect }}</td>
+                    </tr>
+
             {% endfor %}
             </tbody>
         </table>
     {% else %}
-        <p>Er zijn momenteel geen teams.</p>
+        <p>Er zijn momenteel geen deelnemende teams.</p>
     {% endif %}
 {% endblock %}
