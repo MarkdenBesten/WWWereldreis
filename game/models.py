@@ -68,6 +68,7 @@ class TeamProfile(models.Model):
     timeLastCorrect = models.DateTimeField(default=None, null=True, blank=True)
     timeWrong = models.DateTimeField(default=datetime.datetime.now())
     timeJoker = models.DateTimeField(default=(datetime.datetime.now()))
+    isActive = models.BooleanField(default=True)
 
     # Metadata
     class Meta:

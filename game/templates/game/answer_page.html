@@ -32,9 +32,9 @@
     {% endif %}
     <p>{{ question.content }}</p>
     {% if question.fileUrl %}
-            {% load static %}
-            <p><a href="{% static 'gamedata'%}/{{ question.fileUrl }}">{{ question.fileUrl }}</a> </p>
-        {% endif %}
+        {% load static %}
+        <p><a href="{% static 'gamedata'%}/{{ question.fileUrl }}">{{ question.fileUrl }}</a> </p>
+    {% endif %}
 
     <p><em>{{ question.explanation }}</em></p>
 

@@ -6,13 +6,14 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.views.generic import DetailView, ListView
+from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 from .models import Question, Answer, TeamProfile
 from .forms import AnswerForm
-from django.conf import settings
 
+MIN_TIME = datetime.time(hour=00, minute=00)
+MAX_TIME = datetime.time(hour=23, minute=59)
 wrongDelta = datetime.timedelta(hours=0, minutes=5)
 jokerDelta = datetime.timedelta(hours=0, minutes=15)
 tzDelta = datetime.timedelta(hours=2)
@@ -22,8 +23,8 @@ tzDelta = datetime.timedelta(hours=2)
 def index(request):
     """View function for home page of site"""
     context = {
-        'start': settings.MIN_TIME,
-        'einde': settings.MAX_TIME,
+        'start': MIN_TIME,
+        'einde': MAX_TIME,
     }
     return render(request, 'index.html', context)
 
@@ -31,8 +32,8 @@ def index(request):
 def reisgids(request):
     """View function for 'reisgids'."""
     context = {
-        'start': settings.MIN_TIME,
-        'einde': settings.MAX_TIME,
+        'start': MIN_TIME,
+        'einde': MAX_TIME,
     }
     return render(request, 'reisgids.html', context)
 
@@ -60,7 +61,7 @@ class TeamListView(ListView):
         context = super().get_context_data(**kwargs)
         context['user'] = self.request.user
         context['num_questions'] = Question.objects.count()
-        if settings.MAX_TIME > datetime.datetime.now().time():
+        if MAX_TIME > datetime.datetime.now().time():
             # spel is afgelopen
             context['title'] = 'Tussenstand'
         else:
@@ -74,15 +75,15 @@ def question_page(request, pk):
     user = request.user
 
     # functions for when the time is up
-    if settings.MIN_TIME > datetime.datetime.now().time():
+    if MIN_TIME > datetime.datetime.now().time():
         context = {
-            'tijd': settings.MIN_TIME,
+            'tijd': MIN_TIME,
         }
         return render(request, 'game/too_early.html', context)
 
-    if settings.MAX_TIME < datetime.datetime.now().time():
+    if MAX_TIME < datetime.datetime.now().time():
         context = {
-            'tijd': settings.MIN_TIME,
+            'tijd': MIN_TIME,
         }
         return render(request, 'game/too_late.html', context)
 
@@ -210,6 +211,7 @@ def question_page(request, pk):
 def answer_page(request, pk):
     question = get_object_or_404(Question, pk=pk)
     user = request.user
+
     team = user.teamprofile
 
     answers = Answer.objects.filter(question=question, team=team).exclude(result='j')

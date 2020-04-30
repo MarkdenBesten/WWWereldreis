@@ -31,24 +31,25 @@
             </thead>
             <tbody>
             {% for team in teamprofile_list %}
-                {% if team == user.teamprofile %}
-                    <tr class="table-info">
-                {% else %}
-                    <tr>
+                {% if team.isActive %}
+                    {% if team == user.teamprofile %}
+                        <tr class="table-info">
+                    {% else %}
+                        <tr>
+                    {% endif %}
+                            <th>{{ team.user }}</th>
+                            <td>{{ team.points }}</td>
+                            <td>{{ team.jokers }}</td>
+
+                            {% if num_questions < team.current_question %}
+                                <td class="bg-success"><em>Klaar!</em></td>
+                            {% else %}
+                                <td>{{ team.current_question }}</td>
+                            {% endif %}
+
+                            <td>{{ team.timeLastCorrect }}</td>
+                        </tr>
                 {% endif %}
-                        <th>{{ team.user }}</th>
-                        <td>{{ team.points }}</td>
-                        <td>{{ team.jokers }}</td>
-
-                        {% if num_questions < team.current_question %}
-                            <td class="bg-success"><em>Klaar!</em></td>
-                        {% else %}
-                            <td>{{ team.current_question }}</td>
-                        {% endif %}
-
-                        <td>{{ team.timeLastCorrect }}</td>
-                    </tr>
-
             {% endfor %}
             </tbody>
         </table>
